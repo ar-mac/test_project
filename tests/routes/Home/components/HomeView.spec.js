@@ -17,4 +17,15 @@ describe('(View) Home', () => {
   it('renders', () => {
     expect(setup().wrapper.find('HomeView').length).to.equal(1)
   });
+
+  it('renders todos', () => {
+    const todos = [
+      { id: '1', content: 'first' },
+      { id: '2', content: 'second' },
+    ];
+    const { wrapper } = setup({ todos });
+
+    expect(wrapper.text()).to.contains('first');
+    expect(wrapper.text()).to.contains('second');
+  });
 });
