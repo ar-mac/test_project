@@ -1,23 +1,31 @@
 import React from 'react'
-import { HomeView } from 'routes/Home/components/HomeView'
-import { render } from 'enzyme'
+import { HomeView } from '../../../../src/routes/Home/components/HomeView'
+import { mount } from 'enzyme'
 
 describe('(View) Home', () => {
-  let _component
+  const setup = (propOverrides) => {
+    const props = {
+      todos: [],
+      ...propOverrides,
+    };
 
-  beforeEach(() => {
-    _component = render(<HomeView />)
-  })
+    const wrapper = mount(<HomeView {...props} />);
 
-  it('Renders a welcome message', () => {
-    const welcome = _component.find('h4')
-    expect(welcome).to.exist()
-    expect(welcome.text()).to.match(/Welcome!/)
-  })
+    return { wrapper, props }
+  };
 
-  it('Renders an awesome duck image', () => {
-    const duck = _component.find('img')
-    expect(duck).to.exist()
-    expect(duck.attr('alt')).to.match(/This is a duck, because Redux!/)
-  })
-})
+  it('renders', () => {
+    expect(setup().wrapper.find('HomeView').length).to.equal(1)
+  });
+
+  it('renders todos', () => {
+    const todos = [
+      { id: '1', content: 'first' },
+      { id: '2', content: 'second' },
+    ];
+    const { wrapper } = setup({ todos });
+
+    expect(wrapper.text()).to.contains('first');
+    expect(wrapper.text()).to.contains('second');
+  });
+});
